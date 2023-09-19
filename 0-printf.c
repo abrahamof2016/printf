@@ -1,6 +1,6 @@
 #include "main.h"
 /**
-  * _printf - writes a character and string to stdout.
+ * _printf - writes a character and string to stdout.
  * @format: format string.
  * Return: 0 on success.
  **/
@@ -8,13 +8,13 @@ int _printf(const char *format, ...)
 {
 	int i;
 	va_list args;
-	char *buffer = (char *) malloc(strlen(format) + 1);
+	char *buffer = malloc(strlen(format) + 1);
 
-	if(format == NULL)
+	if (format == NULL || buffer == NULL)
 		return (-1);
 	i = 0;
 	va_start(args, format);
-	for (i = 0; format[i] != '\0'; i++)
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
 		{
@@ -22,7 +22,7 @@ int _printf(const char *format, ...)
 		}
 		else if (format[i] == '%')
 		{
-			format++;
+			++format;
 			if (format[i] == 'c')
 			{
 				int val = va_arg(args, int);
@@ -36,10 +36,9 @@ int _printf(const char *format, ...)
 
 				if (str != NULL)
 				{
-					int len = strlen(str);
-
-					strncpy(&buffer[i], str, len);
-					i += len - 1;
+					buffer = realloc(buffer, strlen(format) + strlen(str) + 1);
+					strncpy(&buffer[i], str, strlen(str));
+					i += strlen(str);
 				}
 			}
 		}
