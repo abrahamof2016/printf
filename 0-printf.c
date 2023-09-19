@@ -10,7 +10,7 @@ int _printf(const char *format, ...)
 	va_list args;
 	char *buffer = (char *) malloc(strlen(format) + 1);
 
-	if(format == Null)
+	if(format == NULL)
 		return (-1);
 	i = 0;
 	va_start(args, format);
@@ -22,7 +22,7 @@ int _printf(const char *format, ...)
 		}
 		else if (format[i] == '%')
 		{
-			++format;
+			format++;
 			if (format[i] == 'c')
 			{
 				int val = va_arg(args, int);
