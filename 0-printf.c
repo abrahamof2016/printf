@@ -10,6 +10,8 @@ int _printf(const char *format, ...)
 	va_list args;
 	char *buffer = (char *) malloc(strlen(format) + 1);
 
+	if(format == Null)
+		return (-1);
 	i = 0;
 	va_start(args, format);
 	for (i = 0; format[i] != '\0'; i++)
