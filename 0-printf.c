@@ -11,7 +11,7 @@ int _printf(const char *format, ...)
 	char *buffer = malloc(strlen(format) + 1);
 
 	if (format == NULL || buffer == NULL)
-		return (-1);
+		write(1, "Invalid", 7);
 	i = 0;
 	va_start(args, format);
 	for (i = 0; format && format[i] != '\0'; i++)
@@ -36,7 +36,6 @@ int _printf(const char *format, ...)
 
 				if (str != NULL)
 				{
-					buffer = realloc(buffer, strlen(format) + strlen(str) + 1);
 					strncpy(&buffer[i], str, strlen(str));
 					i += strlen(str);
 				}
