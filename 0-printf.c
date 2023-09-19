@@ -8,11 +8,9 @@ int _printf(const char *format, ...)
 {
 	int i;
 	va_list args;
-	char buffer[BUFF_SIZE];
+	char *buffer = (char *) malloc(strlen(format) + 1);
 
 	i = 0;
-	if (format == NULL)
-		return (-1);
 	va_start(args, format);
 	for (i = 0; format[i] != '\0'; i++)
 	{
@@ -22,7 +20,7 @@ int _printf(const char *format, ...)
 		}
 		else if (format[i] == '%')
 		{
-			format++;
+			++format;
 			if (format[i] == 'c')
 			{
 				int val = va_arg(args, int);
@@ -30,9 +28,22 @@ int _printf(const char *format, ...)
 				if ((val > -128) && (val < 127))
 					buffer[i] = val;
 			}
+			else if (format[i] == 's')
+			{
+				char *str = va_arg(args, char *);
+
+				if (str != NULL)
+				{
+					int len = strlen(str);
+
+					strncpy(&buffer[i], str, len);
+					i += len - 1;
+				}
+			}
 		}
 	}
 	va_end(args);
 	write(1, &buffer[0], strlen(buffer));
+	free(buffer);
 	return (0);
 }
