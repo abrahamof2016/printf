@@ -12,7 +12,7 @@
 int print_char(va_list types,
 		char buffer[],
 		int flags,
-		int widthm,
+		int width,
 		int precision,
 		int size)
 {
