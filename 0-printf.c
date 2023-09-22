@@ -1,49 +1,43 @@
 #include "main.h"
 /**
- * _printf - writes a character and string to stdout.
- * @format: format string.
- * Return: 0 on success.
- **/
+  * _printf - writes an output to a stdout.
+  * @format: format to be handled.
+  * Return: a character on success.
+  */
 int _printf(const char *format, ...)
 {
-	int i;
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff_ind = 0;
 	va_list args;
-	char *buffer = malloc(strlen(format) + 1);
+	char buffer[BUFF_SIZE];
 
-	if (format == NULL || buffer == NULL)
-		write(1, "Invalid", 7);
-	i = 0;
+	if (format == NULL)
+		return (-1);
 	va_start(args, format);
-	for (i = 0; format && format[i] != '\0'; i++)
+	for(i = 0; formatt[i] != '\0'; i++)
 	{
-		if (format[i] != '%')
+		if(format[i] != '%')
 		{
-			buffer[i] = format[i];
+			buffer[buff_ind++] = format[i];
+			if(buff_ind == BUFF_SIZE)
+				print_buffer(buffer, &buff_ind);
+			printed_chars++;
 		}
-		else if (format[i] == '%')
+		else
 		{
-			++format;
-			if (format[i] == 'c')
-			{
-				int val = va_arg(args, int);
-
-				if ((val > -128) && (val < 127))
-					buffer[i] = val;
-			}
-			else if (format[i] == 's')
-			{
-				char *str = va_arg(args, char *);
-
-				if (str != NULL)
-				{
-					strncpy(&buffer[i], str, strlen(str));
-					i += strlen(str);
-				}
-			}
+			printf_buffer(buffer, &buff_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, args);
+			precision = get_precision(format, &i, args);
+			size = get_size(format, &i);
+			++i;
+			printed = handle(format, &i, args, buffer, flags, width, precision, size);
+				if (printd == -1)
+					return (-1);
+			printd_chars += printed;
 		}
 	}
-	va_end(args);
-	write(1, &buffer[0], strlen(buffer));
-	free(buffer);
-	return (0);
+	print_buffer(buffer, &buff_ind);
+	va_end(list);
+	return (printed_chars);
 }
